@@ -167,6 +167,7 @@ public class Case06 {
 			String answerHight = String.valueOf(answer.getSize().getHeight());
 			scrollByElementAndOffset(webDriver.findElement(By.cssSelector("[id*='question-h']")), answerHight);
 
+			assertEquals(answer.getAttribute("class"), "fs18");
 			getEvidence(new Object() {
 			}, "ケース06_No.06_" + index);
 			index++;
