@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -32,7 +33,7 @@ public class WebDriverUtils {
 		System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 		webDriver = new ChromeDriver();
 	}
-	
+
 	/**
 	 * インスタンス終了
 	 */
@@ -48,7 +49,7 @@ public class WebDriverUtils {
 		webDriver.get(url);
 		pageLoadTimeout(5);
 	}
-	
+
 	/**
 	 * ページロードタイムアウト設定
 	 * @param second
@@ -56,7 +57,7 @@ public class WebDriverUtils {
 	public static void pageLoadTimeout(int second) {
 		webDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(second));
 	}
-	
+
 	/**
 	 * 要素の可視性タイムアウト設定
 	 * @param locater
@@ -66,7 +67,7 @@ public class WebDriverUtils {
 		WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(second));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locater));
 	}
-	
+
 	/**
 	 * 指定ピクセル分だけスクロール
 	 * @param pixel
@@ -75,7 +76,6 @@ public class WebDriverUtils {
 		((JavascriptExecutor) webDriver).executeScript("window.scrollBy(0," + pixel + ");");
 	}
 
-	
 	/**
 	 * 指定位置までスクロール
 	 * @param pixel
@@ -112,6 +112,29 @@ public class WebDriverUtils {
 			Files.move(tempFile, new File("evidence\\" + className + "_" + methodName + "_" + suffix + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 指定された要素までスクロール(オフセットなし)
+	 * 
+	 * @param element
+	 */
+	public static void scrollByElement(WebElement element) {
+		// offset 省略時は 0 とみなす
+		scrollByElementAndOffset(element, "0");
+	}
+
+	/**
+	 * 指定された要素(+オフセット分のピクセル)までスクロール
+	 * 
+	 * @param element
+	 * @param offset
+	 */
+	public static void scrollByElementAndOffset(WebElement element, String offset) {
+		((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView();", element);
+		if (!offset.isEmpty()) {
+			scrollBy(offset);
 		}
 	}
 
