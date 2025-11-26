@@ -215,6 +215,7 @@ public class Case08 {
 
 		visibilityTimeout(By.xpath("//h2[text() = 'ユーザー詳細']"), 10);
 
+		assertEquals(webDriver.getTitle(), "ユーザー詳細");
 		getEvidence(new Object() {
 		}, "ケース08_No.06_2");
 
